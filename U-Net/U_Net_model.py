@@ -1,36 +1,45 @@
 import torch
 import torch.nn as nn
 
+
 class UNet3D(nn.Module):
-    def __init__(self, in_channel, n_classes):
+    def __init__(self, in_channel, n_classes, bias=False, BN=False):
         self.in_channel = in_channel
         self.n_classes = n_classes
         super(UNet3D, self).__init__()
-        self.ec0 = self.encoder(self.in_channel, 32, bias=True, batchnorm=True)
-        self.ec1 = self.encoder(32, 64, bias=True, batchnorm=True)
-        self.ec2 = self.encoder(64, 64, bias=True, batchnorm=True)
-        self.ec3 = self.encoder(64, 128, bias=True, batchnorm=True)
-        self.ec4 = self.encoder(128, 128, bias=True, batchnorm=True)
-        self.ec5 = self.encoder(128, 256, bias=True, batchnorm=True)
-        self.ec6 = self.encoder(256, 256, bias=True, batchnorm=True)
-        self.ec7 = self.encoder(256, 512, bias=True, batchnorm=True)
+        self.ec0 = self.encoder(self.in_channel, 32, bias=bias, batchnorm=BN)
+        self.ec1 = self.encoder(32, 64, bias=bias, batchnorm=BN)
+        self.ec2 = self.encoder(64, 64, bias=bias, batchnorm=BN)
+        self.ec3 = self.encoder(64, 128, bias=bias, batchnorm=BN)
+        self.ec4 = self.encoder(128, 128, bias=bias, batchnorm=BN)
+        self.ec5 = self.encoder(128, 256, bias=bias, batchnorm=BN)
+        self.ec6 = self.encoder(256, 256, bias=bias, batchnorm=BN)
+        self.ec7 = self.encoder(256, 512, bias=bias, batchnorm=BN)
 
         self.pool0 = nn.MaxPool3d(2)
         self.pool1 = nn.MaxPool3d(2)
         self.pool2 = nn.MaxPool3d(2)
 
-        self.dc9 = self.decoder(512, 512, kernel_size=2, stride=2, bias=True,batchnorm=True)
-        self.dc8 = self.decoder(256 + 512, 256, kernel_size=3, stride=1, padding=1, bias=True,batchnorm=True)
-        self.dc7 = self.decoder(256, 256, kernel_size=3, stride=1, padding=1, bias=True,batchnorm=True)
-        self.dc6 = self.decoder(256, 256, kernel_size=2, stride=2, bias=True,batchnorm=True)
-        self.dc5 = self.decoder(128 + 256, 128, kernel_size=3, stride=1, padding=1, bias=True,batchnorm=True)
-        self.dc4 = self.decoder(128, 128, kernel_size=3, stride=1, padding=1, bias=True,batchnorm=True)
-        self.dc3 = self.decoder(128, 128, kernel_size=2, stride=2, bias=True,batchnorm=True)
-        self.dc2 = self.decoder(64 + 128, 128, kernel_size=3, stride=1, padding=1, bias=True,batchnorm=True)
-        self.dc1 = self.decoder(128, 128, kernel_size=3, stride=1, padding=1, bias=True,batchnorm=True)
-        self.dc0 = self.decoder(128, n_classes, kernel_size=1, stride=1, bias=True,batchnorm=True)
-        # self.weights_init()
+        self.dc9 = self.decoder(512, 512, kernel_size=2, stride=2, bias=bias, batchnorm=BN)
+        self.dc8 = self.decoder(256 + 512, 256, kernel_size=3, stride=1, padding=1, bias=bias, batchnorm=BN)
+        self.dc7 = self.decoder(256, 256, kernel_size=3, stride=1, padding=1, bias=bias, batchnorm=BN)
+        self.dc6 = self.decoder(256, 256, kernel_size=2, stride=2, bias=bias, batchnorm=BN)
+        self.dc5 = self.decoder(128 + 256, 128, kernel_size=3, stride=1, padding=1, bias=bias, batchnorm=BN)
+        self.dc4 = self.decoder(128, 128, kernel_size=3, stride=1, padding=1, bias=bias, batchnorm=BN)
+        self.dc3 = self.decoder(128, 128, kernel_size=2, stride=2, bias=bias, batchnorm=BN)
+        self.dc2 = self.decoder(64 + 128, 64, kernel_size=3, stride=1, padding=1, bias=bias, batchnorm=BN)
+        self.dc1 = self.decoder(64, 64, kernel_size=3, stride=1, padding=1, bias=bias, batchnorm=BN)
+        self.dc0 = nn.Conv3d(64, n_classes, kernel_size=1, stride=1, padding=0, bias=bias)
 
+
+    def weights_init(self):
+        for m in self.modules():
+            classname = m.__class__.__name__
+            if classname.find('Conv') != -1:
+                if not m.weight is None:
+                    nn.init.xavier_normal_(m.weight.data)
+                if not m.bias is None:
+                    m.bias.data.zero_()
 
 
     def encoder(self, in_channels, out_channels, kernel_size=3, stride=1, padding=1, bias=True, batchnorm=False):
@@ -38,29 +47,26 @@ class UNet3D(nn.Module):
             layer = nn.Sequential(
                 nn.Conv3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias),
                 nn.BatchNorm3d(out_channels),
-                nn.ReLU()
-            )
+                nn.ReLU())
         else:
             layer = nn.Sequential(
                 nn.Conv3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias),
-                nn.ReLU()
-            )
+                nn.ReLU())
         return layer
 
 
-    def decoder(self, in_channels, out_channels, kernel_size, stride=1, padding=0, output_padding=0, bias=True,batchnorm=False):
+    def decoder(self, in_channels, out_channels, kernel_size, stride=1, padding=0, output_padding=0, bias=True, batchnorm=False):
         if batchnorm:
             layer = nn.Sequential(
                 nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, output_padding=output_padding, bias=bias),
                 nn.BatchNorm3d(out_channels),
-                nn.ReLU()
-            )
+                nn.ReLU())
         else:
             layer = nn.Sequential(
                 nn.ConvTranspose3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, output_padding=output_padding, bias=bias),
-                nn.ReLU()
-            )
+                nn.ReLU())
         return layer
+
 
     def forward(self, x):
         e0 = self.ec0(x)
