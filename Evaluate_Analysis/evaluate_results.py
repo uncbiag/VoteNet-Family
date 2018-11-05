@@ -47,9 +47,11 @@ def store_dice_score_data(pred_dir, gt_dir, img_num, label_num, save_name, res_t
         elif res_type == 'all_atlases':
             pred_lab = pred_dir + 'all_atlases_majority_voting_s' + str(i) + '.nii.gz'
         elif res_type == 'top_k_global':
-            pred_lab = pred_dir + 'top_6_atlases_majority_voting_s' + str(i) + '.nii.gz'
+            pred_lab = pred_dir + 'top_15_atlases_majority_voting_s' + str(i) + '.nii.gz'
         elif res_type == 'top_k_local':
-            pred_lab = pred_dir + 'top_6_atlases_local_majority_voting_s' + str(i) + '.nii.gz'
+            pred_lab = pred_dir + 'top_15_atlases_local_majority_voting_s' + str(i) + '.nii.gz'
+        elif res_type == 'voted_global':
+            pred_lab = pred_dir + 'voted_common_atlas.nii.gz'
         else:
             raise TypeError('Undefined experiment type!')
         gt_lab = gt_dir + 's' + str(i) + '.nii'
@@ -65,40 +67,49 @@ if __name__ == '__main__':
     # store_dice_score_data(pred_dir='../Label_Fusion/all_atlases_majority_voting/', gt_dir='../Data/LPBA40/corr_label/', img_num=8, label_num=57, save_name='./all_atlases_seg_res.npy', res_type='all_atlases')
     # store_dice_score_data(pred_dir='../Label_Fusion/top_6_atlases_majority_voting/', gt_dir='../Data/LPBA40/corr_label/', img_num=8, label_num=57, save_name='./top_k_global_seg_res.npy', res_type='top_k_global')
     # store_dice_score_data(pred_dir='../Label_Fusion/top_6_atlases_local_majority_voting/', gt_dir='../Data/LPBA40/corr_label/', img_num=8, label_num=57, save_name='./top_k_local_seg_res.npy', res_type='top_k_local')
+    # store_dice_score_data(pred_dir='../Label_Fusion/top_15_atlases_majority_voting/',
+    #                       gt_dir='../Data/LPBA40/corr_label/', img_num=8, label_num=57,
+    #                       save_name='./top_15_global_seg_res.npy', res_type='top_k_global')
+    # store_dice_score_data(pred_dir='../Label_Fusion/top_15_atlases_local_majority_voting/',
+    #                       gt_dir='../Data/LPBA40/corr_label/', img_num=8, label_num=57,
+    #                       save_name='./top_15_local_seg_res.npy', res_type='top_k_local')
+    # store_dice_score_data(pred_dir='../Label_Fusion/',
+    #                       gt_dir='../Data/LPBA40/corr_label/', img_num=8, label_num=57,
+    #                       save_name='./voted_global_seg_res.npy', res_type='voted_global')
 
     ## draw bar graph
-    res_unet_seg = np.load('./results_folder/unet_seg_res.npy')
-    res_unet_seg_mean = np.mean(res_unet_seg, axis=1)
-    res_unet_seg_std = np.std(res_unet_seg, axis=1)
-
-    res_all_majority_voting = np.load('./results_folder/all_atlases_seg_res.npy')
-    res_all_majority_voting_mean = np.mean(res_all_majority_voting, axis=1)
-    res_all_majority_voting_std = np.std(res_all_majority_voting, axis=1)
-
-    res_top_6_majority_voting = np.load('./results_folder/top_k_global_seg_res.npy')
-    res_top_6_majority_voting_mean = np.mean(res_top_6_majority_voting, axis=1)
-    res_top_6_majority_voting_std = np.std(res_top_6_majority_voting, axis=1)
-
-    res_top_6_local_majority_voting = np.load('./results_folder/top_k_local_seg_res.npy')
-    res_top_6_local_majority_voting_mean = np.mean(res_top_6_local_majority_voting, axis=1)
-    res_top_6_local_majority_voting_std = np.std(res_top_6_local_majority_voting, axis=1)
-
-    ind = np.arange(len(res_unet_seg))  # the x locations for the groups
-    width = 0.2  # the width of the bars
-
-    fig, ax = plt.subplots()
-    rects1 = ax.bar(ind - 2*width, res_unet_seg_mean, width, yerr=res_unet_seg_std, color='SkyBlue', label='Unet')
-    rects2 = ax.bar(ind - width, res_all_majority_voting_mean, width, yerr=res_all_majority_voting_std, color='IndianRed', label='All Majority Voting')
-    rects3 = ax.bar(ind, res_top_6_majority_voting_mean, width, yerr=res_top_6_majority_voting_std, color='Blue', label='Top 6 Majority Voting')
-    rects4 = ax.bar(ind + width, res_top_6_local_majority_voting_mean, width, yerr=res_top_6_local_majority_voting_std, color='Red', label='Top 6 Local Majority Voting')
-
-
-    ax.set_ylabel('Dice Score')
-    ax.set_title('Scores by Methods')
-    ax.set_xticks(ind)
-    ax.set_xticklabels(('S33', 'S34', 'S35', 'S36', 'S37', 'S38', 'S39', 'S40'))
-    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-    fig.savefig('test.png', dpi=1000)
+    # res_unet_seg = np.load('./results_folder/unet_seg_res.npy')
+    # res_unet_seg_mean = np.mean(res_unet_seg, axis=1)
+    # res_unet_seg_std = np.std(res_unet_seg, axis=1)
+    #
+    # res_all_majority_voting = np.load('./results_folder/all_atlases_seg_res.npy')
+    # res_all_majority_voting_mean = np.mean(res_all_majority_voting, axis=1)
+    # res_all_majority_voting_std = np.std(res_all_majority_voting, axis=1)
+    #
+    # res_top_6_majority_voting = np.load('./results_folder/voted_global_seg_res.npy')
+    # res_top_6_majority_voting_mean = np.mean(res_top_6_majority_voting, axis=1)
+    # res_top_6_majority_voting_std = np.std(res_top_6_majority_voting, axis=1)
+    #
+    # res_top_6_local_majority_voting = np.load('./results_folder/top_15_local_seg_res.npy')
+    # res_top_6_local_majority_voting_mean = np.mean(res_top_6_local_majority_voting, axis=1)
+    # res_top_6_local_majority_voting_std = np.std(res_top_6_local_majority_voting, axis=1)
+    #
+    # ind = np.arange(len(res_unet_seg))  # the x locations for the groups
+    # width = 0.2  # the width of the bars
+    #
+    # fig, ax = plt.subplots()
+    # rects1 = ax.bar(ind - 2*width, res_unet_seg_mean, width, yerr=res_unet_seg_std, color='SkyBlue', label='Unet')
+    # rects2 = ax.bar(ind - width, res_all_majority_voting_mean, width, yerr=res_all_majority_voting_std, color='IndianRed', label='All Majority Voting')
+    # rects3 = ax.bar(ind, res_top_6_majority_voting_mean, width, yerr=res_top_6_majority_voting_std, color='Blue', label='Top 6 Majority Voting')
+    # rects4 = ax.bar(ind + width, res_top_6_local_majority_voting_mean, width, yerr=res_top_6_local_majority_voting_std, color='Red', label='Top 6 Local Majority Voting')
+    #
+    #
+    # ax.set_ylabel('Dice Score')
+    # ax.set_title('Scores by Methods')
+    # ax.set_xticks(ind)
+    # ax.set_xticklabels(('S33', 'S34', 'S35', 'S36', 'S37', 'S38', 'S39', 'S40'))
+    # ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    # fig.savefig('test_3.png', dpi=1000)
 
     #
     # for i in range(33, 41):
