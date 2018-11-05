@@ -35,4 +35,17 @@ Update: this issue is fixed by remove the random state generate in random_crop_3
 - Warp the labels of the 28 atlases into the testing image space
 - Select template atlases based on global Dice or local Dice
 
+### 3.2 Voting Schemes
+#### 3.2.1 All images global majority uniform voting
+
+#### 3.2.2 All images local majority uniform voting
+
+#### 3.2.3 Top k highest dice score global uniform voting
+
+#### 3.2.4 Top k highest dice score local uniform voting
+
+#### 3.2.5 All images local weighted voting (Gaussion wighting, Inverse distance weighting, Joint label fusion)
+
+#### 3.2.6 Top k highest dice score local weighted voting
+ 
 ## 4. Multi-atlas segmentation
