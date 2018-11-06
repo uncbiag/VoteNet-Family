@@ -1,5 +1,10 @@
 # multi-atlas-segmentation
 
+Key points:
+- The registration network solves the computational bottleneck of MAS
+- The Unet provide prior segmentation can be used to improve the overall segmentation accuracy in MAS
+- Registration network can outperform segmentation network using MAS in general
+
 ## 0. Data augmentation and preprocessing
 
 MGH10, CUMC12, IBSR18, LPBA40, OASIS, ADNI
@@ -36,16 +41,28 @@ Update: this issue is fixed by remove the random state generate in random_crop_3
 - Select template atlases based on global Dice or local Dice
 
 ### 3.2 Voting Schemes
+
+TODO:
+1. Whether using weight derived by label (dice score) is better than intensity similarity (ssd)
+2. Whether it is possible to combine uncertainty map obtained from segmentation net and registration net to improve overall segmentation accuracy 
+3. Whether it is possible to put multi-label fusion in an optimization minimization problem like [this paper](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6226425)
+
 #### 3.2.1 All images global majority uniform voting
+- Utilize all warped atlases labels to vote for the target label
 
 #### 3.2.2 All images local majority uniform voting
+- Utilize all warped atlases labels to vote for the target label according to each individual label
 
 #### 3.2.3 Top k highest dice score global uniform voting
+- Select the atlases of the top k highest dice score to do majority voting 
 
 #### 3.2.4 Top k highest dice score local uniform voting
+- Select the atlases of the top k highest dice score to do majority voting according to each individual label
 
 #### 3.2.5 All images local weighted voting (Gaussion wighting, Inverse distance weighting, Joint label fusion)
+- Local weighted voting based on image intensity difference
 
 #### 3.2.6 Top k highest dice score local weighted voting
+- Local weighted voting based on dice score
  
 ## 4. Multi-atlas segmentation
