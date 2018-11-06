@@ -193,6 +193,41 @@ def top_k_highest_ssd_intensity_global_nonwarp(gt_dir, img_num, target_img, k=6)
     return res_k
 
 
+def top_k_highest_ssd_intensity_global_warp(atlases_dir, img_num, target_img, k=6):
+    """
+    The index of the top k lowest intensity difference between the warped atlases and target image
+    :param atlases_dir: the directory of warped atlases
+    :param img_num: number of atlases
+    :param target_img: the traget image
+    :param k: number of atlases chosen
+    :return: the index list of top k lowest intensity difference between warped atlases and the target image
+    """
+
+    res = np.zeros(img_num)
+    target_img = sitk.ReadImage(target_img)
+    target_img_array = sitk.GetArrayFromImage(target_img)
+    for i in range(img_num):
+        atlas_name = atlases_dir + 's' + str(i + 1) + '/s' + str(i + 1) + '_res.nii'
+        atlas_img = sitk.ReadImage(atlas_name)
+        atlas_img_array = sitk.GetArrayFromImage(atlas_img)
+        res[i] = np.sum((atlas_img_array - target_img_array)**2)
+
+    res_k = np.argsort(res)[-k:]
+
+    return res_k
+
+def weighted_voting_local_gaussian(atlases_dir, img_num, target_img):
+    pass
+
+
+def weighted_voting_local_inverse_distance(atlases_dir, img_num, target_img):
+    pass
+
+
+def weighted_voting_local_joint_fusion(atlases_dir, img_num, atrget_img):
+    pass
+
+
 def voted_gloabl_label(gt_dir, img_num, save_name):
     """
     [Baseline] Use all atlases to vote a common segmentation to account for the segmentation result for each target
@@ -201,7 +236,7 @@ def voted_gloabl_label(gt_dir, img_num, save_name):
     :param save_name: saved target label name
     :return: The common segmentation generated from atlases voting
     """
-    
+
     tmp_img = sitk.ReadImage(gt_dir + 's1.nii')
     tmp_label = sitk.GetArrayFromImage(tmp_img)
     N = len(np.unique(tmp_label))
