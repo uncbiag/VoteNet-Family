@@ -216,15 +216,26 @@ def top_k_highest_ssd_intensity_global_warp(atlases_dir, img_num, target_img, k=
 
     return res_k
 
-def weighted_voting_local_gaussian(atlases_dir, img_num, target_img):
+def weighted_voting_local_intensity_gaussian(atlases_dir, img_num, target_img):
     pass
 
 
-def weighted_voting_local_inverse_distance(atlases_dir, img_num, target_img):
+def weighted_voting_local_intensity_inverse_distance(atlases_dir, img_num, target_img):
     pass
 
 
-def weighted_voting_local_joint_fusion(atlases_dir, img_num, atrget_img):
+def weighted_voting_local_intensity_joint_fusion(atlases_dir, img_num, atrget_img):
+    pass
+
+def weighted_voting_local_dice_gaussian(atlases_dir, img_num, target_img):
+    pass
+
+
+def weighted_voting_local_dice_inverse_distance(atlases_dir, img_num, target_img):
+    pass
+
+
+def weighted_voting_local_dice_joint_fusion(atlases_dir, img_num, atrget_img):
     pass
 
 
