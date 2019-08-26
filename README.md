@@ -24,7 +24,7 @@ Preprocessing:
  
 ## 1. VoteNet
 2-fold cross validation is used. 17 images for training, 3 images for validation, 20 images for testing. 2 folds sum up to cover all images in LPBA40 dataset. 
-
+The architecture of VoteNet is as below.
 ![Architecture](/img/votenet.png)
 
 
@@ -35,10 +35,11 @@ Please refer to Dr. Xiao Yang's [Quicksilver](https://github.com/uncbiag/quicksi
 ## 3. Multi-atlas segmentation
 First using registration network to fast predict the deformation of each atlas to the target image. Secondly, wraping the atlas image and segmentation using deformation field predicted from the first step.
 Then using VoteNet to filter out bad voxels in each warped atlas segmentation. Finally doing plural voting on the filtered warped atlas segmentation to get the final results.
-
+A visual illustration is as below.
 ![Pipeline](/img/pipeline_2.png)
 
 
 ## 4. Highlight
-
+In the following image, the left two are ground truth votenet results and predicted. The right two are the recall map of voting.
+It is obvious that after removing the bad voxels the probability to get correct label is also increasing. 
 ![Result](/img/prob_2.png)
