@@ -22,7 +22,7 @@ Preprocessing:
 - There is an additional label (taged 116) in s37.nii. Currently set it to 0 (background).
 
  
-## 1. U-Net for segmentation (baseline)
+## 1. VoteNet
 2-fold cross validation is used. 17 images for training, 3 images for validation, 20 images for testing. 2 folds sum up to cover all images in LPBA40 dataset. 
 
 Note:
@@ -39,3 +39,7 @@ Please refer to Dr. Xiao Yang's [Quicksilver](https://github.com/uncbiag/quicksi
 ## 3. Multi-atlas segmentation
 First using registration network to fast predict the deformation of each atlas to the target image. Secondly, wraping the atlas image and segmentation using deformation field predicted from the first step.
 Then using VoteNet to filter out bad voxels in each warped atlas segmentation. Finally doing plural voting on the filtered warped atlas segmentation to get the final results.
+![Pipeline](./img/pineline_2.png)
+
+
+## 4. Highlight
