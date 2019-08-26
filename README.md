@@ -25,12 +25,8 @@ Preprocessing:
 ## 1. VoteNet
 2-fold cross validation is used. 17 images for training, 3 images for validation, 20 images for testing. 2 folds sum up to cover all images in LPBA40 dataset. 
 
-Note:
+![Architecture](/img/votenet.png)
 
-1. There is a problem with random cropping of the images in dataloader with multiple processors due to np.random generates the same random numbers for each data batch. 
-This is because numpy doesn't properly handle RNG states when fork subprocesses. It's numpy's issue with multiprocessing tracked at numpy/numpy#9248). 
-Thus, currently, using one worker in dataloader to extract patches.
-Update: this issue is fixed by remove the random state generate in random_crop_3d function. Now, multiple workers can be used to load training data.
 
 ## 2. Registration Net for fast registration prediction
 Please refer to Dr. Xiao Yang's [Quicksilver](https://github.com/uncbiag/quicksilver) project.
@@ -44,3 +40,5 @@ Then using VoteNet to filter out bad voxels in each warped atlas segmentation. F
 
 
 ## 4. Highlight
+
+![Result](/img/prob_2.png)
