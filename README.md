@@ -7,14 +7,13 @@ Key points:
 
 ## 0. Data augmentation and preprocessing
 
-MGH10, CUMC12, IBSR18, LPBA40, OASIS, ADNI
+The first version of VoteNet using [LPBA40](https://www.loni.usc.edu/research/atlases) for VoteNet, and [OASIS](https://www.oasis-brains.org) for registration network.
 Currently, data augmentation step is hold on. Based on the previous work done by Xiao Yang, we already can get a good prediction result compared with those of optimization-based registration methods.
 
-- LPBA40 dataset is used for training a U-net both as a segmentation net and as a baseline for segmentation prediction.
+- LPBA40 dataset is also used for training a U-net as a baseline for segmentation prediction.
 
-- ~~OASIS dataset is used to train a fast registration prediction net.~~
-    Update: Since OASIS dataset only has 384 images, that is not enough for training a well-behaviored registration network, 
-    hence we switch to ADNI dataset, which has over 6000 images of MRI brain images. 
+- OASIS dataset is used to train a fast registration prediction net as described [here](https://github.com/uncbiag/quicksilver).
+
 
 Preprocessing:
 
