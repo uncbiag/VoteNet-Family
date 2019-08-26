@@ -8,7 +8,7 @@ Key points:
 ## 0. Data augmentation and preprocessing
 
 The first version of VoteNet using [LPBA40](https://www.loni.usc.edu/research/atlases) for VoteNet, and [OASIS](https://www.oasis-brains.org) for registration network.
-Currently, data augmentation step is hold on. Based on the previous work done by Xiao Yang, we already can get a good prediction result compared with those of optimization-based registration methods.
+Currently, data augmentation step is hold on. Based on the previous work done by Dr. Xiao Yang, we already can get a good prediction result compared with those of optimization-based registration methods.
 
 - LPBA40 dataset is also used for training a U-net as a baseline for segmentation prediction.
 
@@ -30,41 +30,12 @@ Note:
 1. There is a problem with random cropping of the images in dataloader with multiple processors due to np.random generates the same random numbers for each data batch. 
 This is because numpy doesn't properly handle RNG states when fork subprocesses. It's numpy's issue with multiprocessing tracked at numpy/numpy#9248). 
 Thus, currently, using one worker in dataloader to extract patches.
-Update: this issue is fixed by remove the random state generate in random_crop_3d function. Now, can use multiple workers to load training data.
+Update: this issue is fixed by remove the random state generate in random_crop_3d function. Now, multiple workers can be used to load training data.
 
 ## 2. Registration Net for fast registration prediction
+Please refer to Dr. Xiao Yang's [Quicksilver](https://github.com/uncbiag/quicksilver) project.
 
-## 3. Atlas Selection (Dice Score)
-### 3.1 Nifty Reg toy example to examine the atlas selection procedure
-- Use Nifty Reg to register 28 atlases images to the 8 testing images, which involves 28*8=224 pairwise image registrations 
-- Warp the labels of the 28 atlases into the testing image space
-- Select template atlases based on global Dice or local Dice
-
-### 3.2 Voting Schemes
-
-TODO:
-1. Whether using weight derived by label (dice score) is better than intensity similarity (ssd)
-2. Whether it is possible to combine uncertainty map obtained from segmentation net and registration net to improve overall segmentation accuracy 
-3. Whether it is possible to put multi-label fusion in an optimization minimization problem like [this paper](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6226425)
-
-#### 3.2.1 All images global majority uniform voting
-- Utilize all warped atlases labels to vote for the target label
-
-#### 3.2.2 All images local majority uniform voting
-- Utilize all warped atlases labels to vote for the target label according to each individual label
-
-#### 3.2.3 Top k highest dice score global uniform voting
-- Select the atlases of the top k highest dice score to do majority voting 
-
-#### 3.2.4 Top k highest dice score local uniform voting
-- Select the atlases of the top k highest dice score to do majority voting according to each individual label
-
-#### 3.2.5 All images local weighted voting (Gaussion wighting, Inverse distance weighting, Joint label fusion)
-- Local weighted voting based on image intensity difference
-
-#### 3.2.6 Top k highest dice score local weighted voting
-- Local weighted voting based on dice score
  
-## 4. Multi-atlas segmentation
-
-####4.1 Voting Network
+## 3. Multi-atlas segmentation
+First using registration network to fast predict the deformation of each atlas to the target image. Secondly, wraping the atlas image and segmentation using deformation field predicted from the first step.
+Then using VoteNet to filter out bad voxels in each warped atlas segmentation. Finally doing plural voting on the filtered warped atlas segmentation to get the final results.
