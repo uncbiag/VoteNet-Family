@@ -1,14 +1,14 @@
-# multi-atlas-segmentation
+# VoteNet: A Deep Learning Label Fusion Method for Multi-Atlas Segmentation
 
 Key points:
-- The registration network solves the computational bottleneck of MAS
-- The Unet provide prior segmentation can be used to improve the overall segmentation accuracy in MAS
-- Registration network can outperform segmentation network using MAS in general
+- The registration network solves the computational bottleneck of MAS (Quicksilver currently)
+- The VoteNet provides locally binary prediction whether to use trust the voxel or not from each atlas
+
 
 ## 0. Data augmentation and preprocessing
 
 MGH10, CUMC12, IBSR18, LPBA40, OASIS, ADNI
-Currently, data augmentation step is hold on. 
+Currently, data augmentation step is hold on. Based on the previous work done by Xiao Yang, we already can get a good prediction result compared with those of optimization-based registration methods.
 
 - LPBA40 dataset is used for training a U-net both as a segmentation net and as a baseline for segmentation prediction.
 
@@ -66,3 +66,5 @@ TODO:
 - Local weighted voting based on dice score
  
 ## 4. Multi-atlas segmentation
+
+####4.1 Voting Network
