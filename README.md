@@ -17,12 +17,13 @@ Currently, data augmentation step is hold on. Based on the previous work done by
 
 Preprocessing:
 
-- All brain images are affine transformed, histogram equalized and registrated to a common atlas space.
+- All brain images are affine transformed, histogram equalized and registered to a common atlas space ([ICBM brain template](https://www.ncbi.nlm.nih.gov/pubmed/9343592)).
 - LPBA40 labels are reorganized into continuous integer from 0 (background) to 56.
 - There is an additional label (taged 116) in s37.nii. Currently set it to 0 (background).
+
  
 ## 1. U-Net for segmentation (baseline)
-5-fold cross validation is used. 28 images for training, 4 images for validation, 8 images for testing. 5 folds sum up to cover all images in LPBA40 dataset. 
+2-fold cross validation is used. 17 images for training, 3 images for validation, 20 images for testing. 2 folds sum up to cover all images in LPBA40 dataset. 
 
 Note:
 
