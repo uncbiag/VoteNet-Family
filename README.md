@@ -39,7 +39,8 @@ Please refer to Dr. Xiao Yang's [Quicksilver](https://github.com/uncbiag/quicksi
 ## 3. Multi-atlas segmentation
 First using registration network to fast predict the deformation of each atlas to the target image. Secondly, wraping the atlas image and segmentation using deformation field predicted from the first step.
 Then using VoteNet to filter out bad voxels in each warped atlas segmentation. Finally doing plural voting on the filtered warped atlas segmentation to get the final results.
-![Pipeline](./img/pineline_2.png)
+
+![Pipeline](/img/pipeline_2.png)
 
 
 ## 4. Highlight
