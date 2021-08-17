@@ -1,15 +1,15 @@
 # VoteNet Family
 This is the official repository for  
 
-**VoteNet: A Deep Learning Label Fusion Method for Multi-Atlas Segmentation**
+**VoteNet: A Deep Learning Label Fusion Method for Multi-Atlas Segmentation**  
 [Zhipeng Ding](https://biag.cs.unc.edu/author/zhipeng-ding/), [Xu Han](https://biag.cs.unc.edu/author/xu-han/), and [Marc Niethammer](https://biag.cs.unc.edu/author/marc-niethammer/)  
 *MICCAI 2019*  [eprint arxiv](https://arxiv.org/abs/1904.08963)
 
-**VoteNet+: An Improved Deep Learning Label Fusion Method for Multi-Atlas Segmentation**
+**VoteNet+: An Improved Deep Learning Label Fusion Method for Multi-Atlas Segmentation**  
 [Zhipeng Ding](https://biag.cs.unc.edu/author/zhipeng-ding/), [Xu Han](https://biag.cs.unc.edu/author/xu-han/), and [Marc Niethammer](https://biag.cs.unc.edu/author/marc-niethammer/)  
 *ISBI 2020*  [eprint arxiv](https://arxiv.org/abs/1911.00582)
 
-**VoteNet++: Registration Refinement for Multi-Atlas Segmentation**  
+**VoteNet++: Registration Refinement for Multi-Atlas Segmentation**    
 [Zhipeng Ding](https://biag.cs.unc.edu/author/zhipeng-ding/) and [Marc Niethammer](https://biag.cs.unc.edu/author/marc-niethammer/)  
 *ISBI 2021*  [eprint arxiv](https://arxiv.org/abs/2010.134845)
 
