@@ -11,7 +11,7 @@ This is the official repository for
 
 **VoteNet++: Registration Refinement for Multi-Atlas Segmentation**    
 [Zhipeng Ding](https://biag.cs.unc.edu/author/zhipeng-ding/) and [Marc Niethammer](https://biag.cs.unc.edu/author/marc-niethammer/)  
-*ISBI 2021*  [eprint arxiv](https://arxiv.org/abs/2010.134845)
+*ISBI 2021*  [eprint arxiv](https://arxiv.org/abs/2010.13484)
 
 If you use VoteNet based Multi-Atlas Segmentation or some part of the code, please cite:
 ```
